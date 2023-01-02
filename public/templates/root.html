@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro">
+
+	<title></title>
+
+	<style type="text/css">
+		body{
+			background-color: #123;
+		}
+
+		.text{
+			font-size: 3vh;
+			color: #eee;
+			position: relative;
+		}
+
+		.hn{
+			font-family: Noto Serif Devanagari;
+		}
+
+		.ar{
+			font-family: Noto Naskh Arabic;
+		}
+
+		.en{
+			font-family: Source Code Pro, Courier;
+		}
+
+		.topheading{
+			font-size: 7vh;
+		}
+
+		.in1{
+			left: 5%;
+		}
+
+		.in2{
+			left: 10%;
+		}
+	</style>
+</head>
+<body>
+	<div id="rootname_title" class="topheading text ar in1">
+	</div>
+
+	<div id="definition" class="text en in2">
+	</div>
+
+	<br>
+
+	<div id="derivation" class="text en in2">
+	</div>
+</body>
+<script>
+	var ROOT = decodeURI(window.location.pathname.replaceAll("/root/", ""))
+
+	document.getElementById("rootname_title").innerHTML = ROOT
+	document.title = "Ansham | " + ROOT
+
+	var raw_data_req = new XMLHttpRequest();
+	raw_data_req.open("GET", window.location.pathname + "/req")
+	raw_data_req.send()
+	raw_data_req.onreadystatechange = function(){
+		if (this.readyState == 4 && this.status == 200){
+			var responseText = this.responseText
+			var responseJSON = JSON.parse(responseText)
+			document.getElementById("definition").innerHTML += responseJSON.definition
+
+			//check for non-english words here
+			var arabic_urdu = /[\u0600-\u06FF]/
+			var hindi = /[\u0900-\u097F]/
+
+			var derivation = responseJSON.derivation
+			var derivation_text = ''
+
+			var words = derivation.split(" ")
+
+			for (var word of words){
+				if (arabic_urdu.test(word)){
+					derivation_text += "<span class='text ar'>" + word + "</span> "
+					continue
+				}
+				if (hindi.test(word)){
+					derivation_text += "<span class='text hn'>" + word + "</span> "
+					continue
+				}
+				derivation_text += word + " "
+			}
+
+			document.getElementById("derivation").innerHTML += derivation_text
+		}
+	}
+</script>
+</html>
