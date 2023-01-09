@@ -20,7 +20,11 @@
 		}
 
 		.text{
-			color: #white;
+			color: white;
+		}
+
+		.gray{
+			color: #aaa;
 		}
 
 		.ar{
@@ -39,11 +43,13 @@
 		}
 
 		#search_results{
-			list-style-type: none;
 			padding: 0;
 			margin: 0;
+			position: relative;
+			list-style-type: none;
 			font-size: 4vh;
-			text-align: center;
+			text-align: left;
+			left: 22.5%;
 		}
 
 		#search_results > a{
@@ -76,7 +82,7 @@
 		انْشَم
 	</div>
 	<br>
-	<input type="text" id="searchbar" placeholder="search root or definition..." onkeydown="javascript:executeQuery()">
+	<input type="text" id="searchbar" placeholder="search word or definition..." onkeydown="javascript:executeQuery()">
 	<br>
 	<br>
 	<ul id="search_results">
@@ -104,12 +110,14 @@
 					var data = JSON.parse(row)
 					var el = document.createElement("a")
 					el.target = "_blank"
-					el.href = "/root/" + data.root
-					el.innerHTML = "<span class='text ar'>" + data.root + "</span>"
-					el.innerHTML += ", "
-					el.innerHTML += "<span class='text en'>" + data.definition + "</span>"
+					el.href = "/word/" + data.word
+					el.innerHTML = "<span class='text ar'>" + data.word + "</span>"
+					el.innerHTML += " <span class='text gray en'>" + data.type + "</span>"
+					el.innerHTML += "<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+					el.innerHTML += "<span class='text gray en'>" + data.definition + "</span>"
 
 					document.getElementById("search_results").appendChild(el)
+					document.getElementById("search_results").appendChild(document.createElement("br"))
 					document.getElementById("search_results").appendChild(document.createElement("br"))
 				}
 			}

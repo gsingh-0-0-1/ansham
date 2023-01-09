@@ -15,14 +15,14 @@ app.get("/", (req, res) => {
 	res.sendFile("public/templates/main.html", {root: __dirname})
 })
 
-app.get("/root/:root", (req, res) => {
-	res.sendFile("public/templates/root.html", {root: __dirname})
+app.get("/word/:word", (req, res) => {
+	res.sendFile("public/templates/word.html", {root: __dirname})
 })
 
-app.get("/root/:root/req", (req, res) => {
-	var root = req.params.root
+app.get("/word/:word/req", (req, res) => {
+	var word = req.params.word
 
-	var command = "select * from roots where root='" + root + "'"
+	var command = "select * from words where word='" + word + "'"
 
 	var run = db.all(command, (err, rows) => {
 		if (err){
@@ -54,10 +54,10 @@ app.get("/root/:root/req", (req, res) => {
 app.get("/query/:item", (req, res) => {
 	var item = req.params.item
 
-	var command = "select * from roots where "
-	command = command + "root like '%" + item + "%' or "
-	command = command + "definition like '%" + item + "%'"
-	//command = command + "derivation like '%" + item + "%'"
+	var command = "select * from words where "
+	command = command + "word like '%" + item + "%' or "
+	command = command + "definition like '%" + item + "%' or "
+	command = command + "type like '%" + item + "%'"
 
 	var run = db.all(command, (err, rows) => {
 		if (err){

@@ -22,6 +22,8 @@ Optional lines can be left empty
 '''
 
 for entry in listing:
+	if entry[0] == '.':
+		continue
 	fname = os.path.join(NEW_ENTRY_DIR, entry)
 	f = open(fname, "r")
 	data = f.read()
@@ -38,7 +40,7 @@ for entry in listing:
 	if len(definition) == 0:
 		print("Definition can not be empty!")
 
-	command = "insert into roots (root, definition, derivation) values ('{root}', '{definition}', '{derivation}')"
+	command = "insert into words (word, type, definition, derivation) values ('{root}', 'root', '{definition}', '{derivation}')"
 	command = command.format(root = root, definition = definition, derivation = derivation)
 
 	try:
